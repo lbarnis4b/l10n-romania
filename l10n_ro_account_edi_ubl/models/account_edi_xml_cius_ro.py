@@ -320,15 +320,20 @@ class AccountEdiXmlCIUSRO(models.Model):
     def _import_fill_invoice_line_form(
         self, journal, tree, invoice, invoice_line, qty_factor
     ):
+        def _find_value(xpath, element=tree):
+            # avoid 'TypeError: empty namespace prefix is not supported in XPath'
+            nsmap = {k: v for k, v in tree.nsmap.items() if k is not None}
+            return self.env["account.edi.format"]._find_value(xpath, element, nsmap)
+
         res = super()._import_fill_invoice_line_form(
             journal, tree, invoice, invoice_line, qty_factor
         )
 
-        vendor_code = self._find_value(
+        vendor_code = _find_value(
             "./cac:Item/cac:SellersItemIdentification/cbc:ID", tree
         )
         if not vendor_code:
-            vendor_code = self._find_value(
+            vendor_code = _find_value(
                 "./cac:Item/cac:StandardItemIdentification/cbc:ID", tree
             )
 
@@ -411,10 +416,10 @@ class AccountEdiXmlCIUSRO(models.Model):
             mail,
             vat,
             country_code,
-            street,
-            street2,
-            city,
-            zip_code,
+            # street,
+            # street2,
+            # city,
+            # zip_code,
         )
         if not invoice.partner_id.is_company and name and vat:
             if not invoice.partner_id.parent_id:
@@ -423,26 +428,31 @@ class AccountEdiXmlCIUSRO(models.Model):
         return res
 
     def _import_fill_invoice_form(self, journal, tree, invoice_form, qty_factor):
+        def _find_value(xpath, element=tree):
+            # avoid 'TypeError: empty namespace prefix is not supported in XPath'
+            nsmap = {k: v for k, v in tree.nsmap.items() if k is not None}
+            return self.env["account.edi.format"]._find_value(xpath, element, nsmap)
+
         # Overwrite to take partner from RegistrationName
         if not invoice_form.partner_id:
             role = "Customer" if invoice_form.journal_id.type == "sale" else "Supplier"
-            vat = self._find_value(
+            vat = _find_value(
                 f"//cac:Accounting{role}Party/cac:Party//cbc:CompanyID",  # noqa: E231
                 tree,
             )
-            phone = self._find_value(
+            phone = _find_value(
                 f"//cac:Accounting{role}Party/cac:Party//cbc:Telephone",  # noqa: E231
                 tree,
             )
-            mail = self._find_value(
+            mail = _find_value(
                 f"//cac:Accounting{role}Party/cac:Party//cbc:ElectronicMail",  # noqa: E231
                 tree,
             )
-            name = self._find_value(
+            name = _find_value(
                 f"//cac:Accounting{role}Party/cac:Party//cac:PartyLegalEntity//cbc:RegistrationName",  # noqa: B950,E231
                 tree,
             )
-            country_code = self._find_value(
+            country_code = _find_value(
                 f"//cac:Accounting{role}Party/cac:Party//cac:Country//cbc:IdentificationCode",  # noqa: B950,E231
                 tree,
             )
