@@ -31,7 +31,7 @@
                             t-set="qty"
                             t-value="move_line.qty_done or move_line.reserved_uom_qty or 1"
                         />
-                        <bunuriTransportate
+                        <!--bunuriTransportate
                             t-att-codTarifar="get_instastat_code(move.product_id)"
                             t-att-denumireMarfa="move.product_id.name"
                             t-att-cantitate="move_line.qty_done or move_line.reserved_uom_qty or 1"
@@ -40,6 +40,16 @@
                             t-att-greutateBruta="round(qty* (move.product_id.weight or 1),2)"
                             t-att-codScopOperatiune="doc.l10n_ro_e_transport_scope_id.code or '101'"
                             t-att-valoareLeiFaraTva="round(qty * (move_line.product_id.standard_price or 1),0)"
+                        /-->
+                        <bunuriTransportate
+                            t-att-codTarifar="get_instastat_code(move.product_id)"
+                            t-att-denumireMarfa="move.product_id.name"
+                            t-att-cantitate="move_line.qty_done or move_line.reserved_uom_qty or 1"
+                            t-att-codUnitateMasura="move.product_uom._get_unece_code()"
+                            t-att-greutateNeta="round(qty * (move.product_id.l10n_ro_net_weight or move.product_id.weight or 1),2)"
+                            t-att-greutateBruta="round(qty* (move.product_id.weight or 1),2)"
+                            t-att-codScopOperatiune="doc.l10n_ro_e_transport_scope_id.code or '101'"
+                            t-att-valoareLeiFaraTva="round(qty * (move.price_unit or 1),0)"
                         />
                     </t>
                 </t>
