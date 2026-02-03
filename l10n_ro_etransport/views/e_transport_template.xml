@@ -27,7 +27,7 @@
                 />
                 <t t-foreach="doc.move_ids" t-as="move">
                     <t t-foreach="move.move_line_ids" t-as="move_line">
-						<t t-if="move_line.qty_done != 0 or move_line.reserved_uom_qty != 0">
+						<t t-if="move_line.qty_done and move_line.qty_done != 0">
 							<t
 								t-set="qty"
 								t-value="move_line.qty_done or move_line.reserved_uom_qty or 1"
