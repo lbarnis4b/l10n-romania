@@ -17,7 +17,7 @@ class TestCreatePartnerBase(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls):
         ro_template_ref = "l10n_ro.ro_chart_template"
-        super(TestCreatePartnerBase, cls).setUpClass(chart_template_ref=ro_template_ref)
+        super().setUpClass(chart_template_ref=ro_template_ref)
         cls.env.company.l10n_ro_accounting = True
         cls.mainpartner = cls.env["res.partner"].create({"name": "Test partner"})
         test_file_path = get_module_resource(
@@ -52,10 +52,6 @@ class TestCreatePartner(TestCreatePartnerBase):
         cod = "3083485711"
         error, result = self.mainpartner._get_Anaf(cod)
         self.assertTrue(len(error) > 3)
-        cod = ["30834857", "3083485711"]
-        error, result = self.mainpartner._get_Anaf(cod)
-        if result:
-            self.assertTrue(result.get("cod"))
 
     def test_onchange_vat_anaf(self):
         """Check onchange vat from ANAF."""

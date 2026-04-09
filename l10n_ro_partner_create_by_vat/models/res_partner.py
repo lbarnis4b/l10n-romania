@@ -11,13 +11,13 @@ from odoo import _, api, fields, models
 _logger = logging.getLogger(__name__)
 
 CEDILLATRANS = bytes.maketrans(
-    "\u015f\u0163\u015e\u0162".encode("utf8"),
-    "\u0219\u021b\u0218\u021a".encode("utf8"),
+    "\u015f\u0163\u015e\u0162".encode(),
+    "\u0219\u021b\u0218\u021a".encode(),
 )
 
 CEDILLATRANS = bytes.maketrans(
-    "\u015f\u0163\u015e\u0162\u00e2\u00c2\u00ee\u00ce\u0103\u0102".encode("utf8"),
-    "\u0219\u021b\u0218\u021a\u00e2\u00c2\u00ee\u00ce\u0103\u0102".encode("utf8"),
+    "\u015f\u0163\u015e\u0162\u00e2\u00c2\u00ee\u00ce\u0103\u0102".encode(),
+    "\u0219\u021b\u0218\u021a\u00e2\u00c2\u00ee\u00ce\u0103\u0102".encode(),
 )
 
 headers = {
@@ -26,7 +26,7 @@ headers = {
 }
 
 # anaf syncron url https://static.anaf.ro/static/10/Anaf/Informatii_R/Servicii_web/doc_WS_V8.txt
-ANAF_URL = "https://webservicesp.anaf.ro/PlatitorTvaRest/api/v8/ws/tva"
+ANAF_URL = "https://webservicesp.anaf.ro/api/PlatitorTvaRest/v9/tva"
 
 AnafFiled_OdooField_Overwrite = [
     ("vat", "vat", "over_all_the_time"),
